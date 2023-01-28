@@ -1,6 +1,9 @@
 <template>
   <div class="main-container">
     <!-- <Micro /> -->
+    <Index msg="Test!"/>
+    <p> Howdy!</p>
+    <FileForm url="http://127.0.0.1:5000/catch"></FileForm>
     <p>fuidwsbdiusbfiuds</p>
     <span class="line"></span>
     <p>fwiybdisubiuds</p>
@@ -11,6 +14,8 @@
 <script>
   import Macro from './components/Macro'
   import Micro from './components/Micro'
+  import Index from './components/Index.vue'
+import FileForm from './components/FileForm.vue'
 
   import {parseJSON} from '@msagl/parser'
   import {Renderer} from '@msagl/renderer'
@@ -21,7 +26,9 @@ export default {
   name: 'App',
   components: {
     Macro,
-    Micro
+    Micro,
+    Index,
+    FileForm
   },
   data() {
     return {
