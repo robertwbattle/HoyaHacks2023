@@ -7,6 +7,10 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@msagl/parser": "^1.1.4",
+    "@msagl/renderer": "^1.1.5",
+    "leader-line": "^1.0.7",
+    "msagl-js": "^1.1.4",
     "vue": "^3.2.13"
   },
   "devDependencies": {
