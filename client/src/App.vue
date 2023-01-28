@@ -3,7 +3,7 @@
     <!-- <Micro /> -->
     <Index msg="Test!"/>
     <p> Howdy!</p>
-    <FileForm url="http://127.0.0.1:5000/catch"></FileForm>
+    <FileForm url="http://127.0.0.1:5000/catch" class="leftCenter"></FileForm>
     <p>fuidwsbdiusbfiuds</p>
     <span class="line"></span>
     <p>fwiybdisubiuds</p>

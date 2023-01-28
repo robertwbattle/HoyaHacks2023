@@ -1,0 +1,37 @@
+.div1 { 
+    grid-area: menu;
+    border-right: 5px solid black;
+}
+.div2 { 
+    grid-area: main;
+    border-bottom: 5px solid black;
+    margin-bottom: 250px;
+    margin-left: 15px;
+}
+.div3 { 
+    grid-area: footer;
+    margin-top: -230px;
+    margin-left: 15px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-areas:
+        'menu main'
+        'menu footer';
+    gap: 1px;
+    padding: 1px;
+}
+
+textarea {
+    width: 630px;
+    height: 800px;
+    padding-right: 0px;
+    margin-left: 20px;
+    margin-right: -550px;
+}
+
+.grid-container > div {
+padding: 1px 0;
+padding-right: 0px;
+}
