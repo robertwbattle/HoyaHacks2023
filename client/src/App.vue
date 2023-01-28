@@ -1,15 +1,18 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <Index msg="Test!"/>
+  <p> Howdy!</p>
+  <FileForm url="http://127.0.0.1:5000/catch"></FileForm>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Index from './components/Index.vue'
+import FileForm from './components/FileForm.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Index,
+    FileForm
   }
 }
 </script>
