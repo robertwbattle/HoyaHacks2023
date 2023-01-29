@@ -1,8 +1,17 @@
 <template>
-    <div class="micro-container">
+    <!-- <div class="micro-container">
         <textarea readonly cols="30" id="json" style="background-color: transparent;color:#fff;width: 100%; height: 75%;resize:none;"></textarea>
         <label class="path-label" for="path-input">Enter variable to track in the format function/variable/functionCall, then press view!</label>
-        <input type="text" name="path-input" id="path-input" placeholder="bar/z/0" style="resize:none;height:30px;width: 100%;background-color:transparent;color:#fff;">
+        <input type="text" name="path-input" id="path-input" placeholder="bar/z/0" style="resize:none;height:30px;width: 100%;background-color:transparent;color:#fff;"> -->
+    <div style="margin-left:10px"><textarea readonly cols="30" id="json" style="background-color: transparent;color:#fff;height:400px;width:700px;resize:none;"></textarea>
+        <p></p>
+        <textarea style="resize:none;width:800px;height:30px;background-color:transparent;color:#fff;" maxlength="80" id="enter">Enter variable to track in the format function/variable/functionCall, then press view!</textarea>
+        <button id="view" @click="view">View</button>
+        <p style="" id="variable"></p>
+        <button style="margin-top:100px" id="back" @click="back">Back</button>
+        <button style="margin-top:100px;margin-left:20px;" id="forward" @click="forward">Forward</button>
+        <p hidden id="currentState"></p>
+        <p hidden id="cind"></p>
     </div>
 </template>
 
@@ -13,7 +22,32 @@
         props: ["analysis"],
         methods: {
             insertJson(txt) {
-                document.getElementById("json").value = JSON.stringify(createStates(txt.microscopic), undefined, 4);
+                var states = createStates(txt.microscopic)
+                document.getElementById("json").value = JSON.stringify(states, undefined, 4);
+            },
+            view() {
+                console.log("viewed")
+                var output = document.getElementById("enter").value.split("/");
+                console.log(output)
+                if (JSON.parse(document.getElementById("json").value)[output[0]][output[1]][output[2]]) {
+                    document.getElementById("currentState").innerHTML = JSON.stringify(JSON.parse(document.getElementById("json").value)[output[0]][output[1]][output[2]]);
+                    document.getElementById("cind").innerHTML = 0;
+                    document.getElementById("variable").innerHTML = JSON.stringify(JSON.parse(document.getElementById("json").value)[output[0]][output[1]][output[2]][0]);
+                }
+            },
+            forward() {
+                var cind = document.getElementById("cind").innerHTML;
+                var d = JSON.parse(document.getElementById("currentState").innerHTML);
+                cind = cind < d.length-1 ? cind + 1 : cind;
+                console.log(cind);
+                console.log(JSON.parse(document.getElementById("currentState").innerHTML))
+                document.getElementById("variable").innerHTML = JSON.stringify(JSON.parse(document.getElementById("currentState").innerHTML)[parseInt(cind, 10)]);
+            },
+            back() {
+                var cind = document.getElementById("cind").innerHTML;
+                cind = cind > 0 ? cind - 1 : cind;
+                document.getElementById("variable").innerHTML = JSON.stringify(JSON.parse(document.getElementById("currentState").innerHTML)[parseInt(cind, 10)]);
+
             }
         },
         mounted() {
