@@ -1,24 +1,18 @@
 {
-  "nodes": [
-    {
-      "id": "function1"
-    },
-    {
-      "id": "function2"
-    },
-    {
-      "id": "function3"
-    }
-  ],
+  "functions": {
+    "1": "function1",
+    "2": "function2",
+    "3": "function3"
+  },
   "edges": [
-    {"source": "function1", "target": "function2"},
-    {"source": "function2", "target": "function3"},
-    {"source": "function3", "target": "function2"}
+    [1, 2],
+    [2, 3],
+    [3, 2]
   ],
   "order": [
-    2,
-    3,
-    2,
-    1
+    "function1",
+    "function2",
+    "function3",
+    "function2"
   ]
 }
