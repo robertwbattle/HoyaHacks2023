@@ -1,38 +1,39 @@
-from flask import Flask, render_template, Response, redirect, request
-from werkzeug.utils import secure_filename
+import flask
+import json
 import os
+import sys
+import tempfile
+import uuid
 
+sys.path.append(os.pardir)
 
+from visify.analyzer.module_macroscopic import ModuleMacroscopic
 
-UPLOAD_FOLDER = "./uploads"
-
-ALLOWED_EXTENSIONS = {"py"}
-app = Flask(__name__)
-app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+app = flask.Flask(__name__,
+    static_folder=os.path.join(os.pardir, "client", "dist"),
+    static_url_path="/"
+)
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return app.send_static_file("index.html")
 
+@app.route("/analyze")
+def analyze():
+    if "file" not in flask.request.files:
+        return "Please provide a Python file to analyze.", 400
 
-@app.route("/catch", methods=["POST"])
-def catch():
-    if request.method == "POST":
-        if "file" not in request.files:
-            return redirect("/") #tmp
-        file = request.files["file"]
-        if file.filename == "":
-            return redirect("/") #tmp
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-            return "file saved!" #tmp
-    else:
-        return Response("{'msg':'Error: POST method required.'}", status=200)
+    with tempfile.TemporaryDirectory() as directory:
+        module_name = str(uuid.uuid4())
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+        with open(os.path.join(directory, f"{module_name}.py")) as file:
+            file.write(flask.request.files["file"].read())
 
+        sys.path.append(directory)
 
-app.run(debug=True)
+        macroscopic = ModuleMacroscopic(module_name)
+        macroscopic.run()
+
+        del sys.path[-1]
+
+    return json.dumps(macroscopic.encoded_result())

@@ -1,6 +1,6 @@
 <template lang="en">
     <div class="fileform">
-            <form method="POST" :action=url enctype=multipart/form-data>
+            <form v-on:submit="sendReq" enctype=multipart/form-data>
                 <input type="file" accept=".py" name=file >
                 <input type="submit">
             </form>
@@ -8,14 +8,23 @@
 </template>
 
 <script>
-
 export default {
     name: 'FileForm',
     props: {
         url: String
+    },
+    methods: {
+        async sendReq(evt) {
+            let response = await fetch(this.url, {
+                method: "POST",
+                body: evt.target.file
+            });
+
+            let result = await response.json();
+        }
     }
 }
 </script>
 <style lang="">
-    
+
 </style>
