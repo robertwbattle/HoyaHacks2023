@@ -49,7 +49,7 @@
 					if (i > 0) {
 						const current_animation = animation;
 
-						animation = () => this.canvas.delay(100, current_animation);
+						animation = () => this.canvas.delay(1000, current_animation);
 					}
 				}
 
@@ -87,7 +87,7 @@
 					],
 					layout: {
             'name': 'circle'
-        	}
+					}
 				});
 				this.canvas.elements().layout({
 					name: 'circle'

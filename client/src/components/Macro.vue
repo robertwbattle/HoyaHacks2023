@@ -27,10 +27,12 @@
 
 				element.animate({
 					style : {
-						"background-color" : color
+						'background-color' : color,
+						'line-color': color,
+						'target-arrow-color': color,
 					},
 
-					duration: 100,
+					duration: 500,
 					easing: "linear"
 				});
 			},
@@ -60,7 +62,7 @@
 			},
 
 			onNodeTapped(function_name) {
-				console.log(function_name);
+				// console.log(function_name);
 			}
 		},
 

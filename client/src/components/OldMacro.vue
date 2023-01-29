@@ -2,20 +2,19 @@
   <div class="macro-container">
     <div id="cy"></div>
     <div class="macro-player">
-      <button id="pause" class="playback-btn btn btn-secondary">Pause</button>
       <button id="play" class="playback-btn btn btn-secondary">Play</button>
     </div>
   </div>
 </template>
 
 <script>
-import macroJSON from '../json/exampleData.json'
 import cytoscape from 'cytoscape';
 
 export default {
-  name: 'Macro',
-  props: {
-  },
+  name: 'OldMacro',
+  props: 
+    ["analysis"]
+  ,
   components: {
     Function
   },
@@ -27,17 +26,17 @@ export default {
   methods: {
     async updateMacro() {
       let cyto = []
-      Object.values(macroJSON.functions).forEach(val => {
+      Object.values(this.analysis.functions).forEach(val => {
         const container = {};
         container.data = {
           id: val
         };
         cyto.push(container)
       });
-      macroJSON.edges.forEach(edge => {
+      this.analysis.edges.forEach(edge => {
         const container = {};
-        const edgeStart = macroJSON.functions[edge[0]];
-        const edgeEnd = macroJSON.functions[edge[1]];
+        const edgeStart = edge[0];
+        const edgeEnd = edge[1];
         container.data = {
           id: edgeStart+ '-' + edgeEnd,
           source: edgeStart,
@@ -56,7 +55,8 @@ export default {
             selector: 'node',
             style: {
               'background-color': '#FBF9FF',
-              'label': 'data(id)'
+              'label': 'data(id)',
+              'color': "#FBF9FF"
             },
             css: {
               events: 'no'
@@ -89,15 +89,17 @@ export default {
       });
 
       let animationQueue= []
-      for(let i = 0; i < macroJSON.order.length; i++) {
-        if(i == macroJSON.order.length - 1) {
+      for(let i = 0; i < this.analysis.order.length; i++) {
+        if(i == this.analysis.order.length - 1) {
           break
         }
-        let sourceNode = cy.elements(`node#${macroJSON.order[i]}`);
-        let targetNode = cy.elements(`node#${macroJSON.order[i+1]}`);
-        let edge = sourceNode.edgesTo(`#${macroJSON.order[i+1]}`);
+        let sourceNode = cy.elements(`node#${this.analysis.order[i]}`);
         animationQueue.push(sourceNode.id());
-        animationQueue.push(edge.id());
+        let targetNode = cy.elements(`node#${this.analysis.order[i+1]}`);
+        if(sourceNode.edgesTo(`#${this.analysis.order[i+1]}`)){
+          let edge = sourceNode.edgesTo(`#${this.analysis.order[i+1]}`);
+          animationQueue.push(edge.id());
+        }
       }
       console.log(animationQueue)
 
@@ -111,7 +113,7 @@ export default {
         let color;
         const elmId = queue[i];
         const currentElm = cy.elements(`#${elmId}`);
-        console.log(currentElm)
+        // console.log(currentElm)
 
         if(isFading){
           color = '#FBF9FF'
@@ -119,19 +121,22 @@ export default {
         else {
           color = '#ff6933'
         }
-        currentElm.animate({
+        if(currentElm){
+          currentElm.animate({
             style : {
-              'background-color' : color
+              'background-color' : color,
+              "line-color": color,
+              "target-arrow-color": color,
             },
             duration: 1000,
             easing: 'linear'
           }, 1000)
-
-
-        setTimeout(() => this.animateNode(cy, queue, i + 1, isFading), 250,)
+        }
+        setTimeout(() => this.animateNode(cy, queue, i + 1, isFading), 250)
       }
   },
   async mounted() {
+    console.log(this.analysis)
     this.macroData = await this.updateMacro();
     await this.setUpGraph()
   }

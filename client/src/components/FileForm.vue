@@ -28,7 +28,7 @@ export default {
                 .then(response => response.json())
                 .then(result => {
                     this.$emit("receivedAnalysis", result);
-                    console.log(result);
+                    // console.log(result);
                     createStates(result["microscopic"]);
                 });
 
