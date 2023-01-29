@@ -3,9 +3,10 @@
         <textarea readonly cols="30" id="json"></textarea>
         <label for="string-parser" class="parser-label">Enter variable to track in the format function/variable/functionCall, then press view!</label>
         <input type="text" id="string-parser" name="string-parser" placeholder="pizzaCounter/cheesePizzas/0">
-        <button id="view" @click="view" class="btn btn-caution">View</button>
-        <p style="" id="variable"></p>
+        
+        <p id="variable" style="color: white;"></p>
         <div>
+            <button id="view" @click="view" class="btn btn-primary">View</button>
             <button style="margin-top:100px" id="back" @click="back" class="btn btn-primary">Back</button>
             <button style="margin-top:100px;margin-left:20px;" id="forward" @click="forward" class="btn btn-primary">Forward</button>
         </div>
@@ -26,7 +27,7 @@
             },
             view() {
                 console.log("viewed")
-                var output = document.getElementById("enter").value.split("/");
+                var output = document.getElementById("string-parser").value.split("/");
                 console.log(output)
                 if (JSON.parse(document.getElementById("json").value)[output[0]][output[1]][output[2]]) {
                     document.getElementById("currentState").innerHTML = JSON.stringify(JSON.parse(document.getElementById("json").value)[output[0]][output[1]][output[2]]);

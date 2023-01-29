@@ -23,18 +23,3 @@ def fizz():
 
 if __name__ == "__main__":
 	foo()
-
-# def main(list_):
-# 	result = list_spy([])
-
-# 	for element in list_:
-# 		i = bisect.bisect_right(list_, element)
-
-# 		result.insert(i, element)
-
-# 	return result
-
-# if __name__ == "__main__":
-# 	print("Main code called!")
-
-# 	print(main([6, 5, 4, 3, 2, 1]))
