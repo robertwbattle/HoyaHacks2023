@@ -5,8 +5,9 @@ function createStates(jsonInput) {
       output[func] = {}
       for (var vCount = 0; vCount < jsonInput[func].length; vCount++) {
         var variableName = jsonInput[func][vCount].name;
-        output[func][variableName] = []
+        output[func][variableName] = {}
         if (jsonInput[func][vCount]["type"] === "list") {
+          output[func][variableName]["type"] = "list";
           for (var invocation = 0; invocation < jsonInput[func][vCount]["invocations"].length; invocation++) {
             if (jsonInput[func][vCount]["invocations"][invocation] != null) {
               // Set the initial state in the state list
@@ -30,6 +31,7 @@ function createStates(jsonInput) {
             }
           }
         } else if (jsonInput[func][vCount]["type"] === "dict") {
+          output[func][variableName]["type"] = "dict";
           for (var invocation = 0; invocation < jsonInput[func][vCount]["invocations"].length; invocation++) {
             if (jsonInput[func][vCount]["invocations"][invocation] != null) {
               // Set the initial state in the state list
