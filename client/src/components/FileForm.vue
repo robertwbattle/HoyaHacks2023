@@ -28,8 +28,13 @@ export default {
                 .then(response => response.json())
                 .then(result => {
                     this.$emit("receivedAnalysis", result);
+<<<<<<< HEAD
                     // console.log(result);
                     createStates(result["microscopic"]);
+=======
+                    console.log(result);
+                    var compiledData = createStates(result["microscopic"]);
+>>>>>>> 11523c597df37202200e187b4cffe2db8c49373b
                 });
 
             event.preventDefault();
