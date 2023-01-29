@@ -29,7 +29,7 @@ export default {
                 .then(result => {
                     this.$emit("receivedAnalysis", result);
                     console.log(result);
-                    createStates(result["microscopic"]);
+                    var compiledData = createStates(result["microscopic"]);
                 });
 
             event.preventDefault();

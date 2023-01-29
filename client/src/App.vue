@@ -1,25 +1,24 @@
 <template>
     <div class="app-container h-100">
         <!-- <Micro v-if="this.analysis" class="left-pane" :analysis="this.analysis"/> -->
-        <Macro v-if="this.analysis" :analysis="this.analysis"/>
+        <NewMicro v-if="this.analysis" class="left-pane" :analysis="this.analysis"/>
         <FileForm v-else="this.analysis" class="left-pane" url="/analyze" @received-analysis="setAnalysis" />
 
         <Macro v-if="this.analysis" :analysis="this.analysis"/>
     </div>
-    "bar/y/1"
 </template>
 
 <script>
     import FileForm from "./components/FileForm"
     import Macro from "./components/Macro"
-    import Micro from "./components/Micro"
+    import NewMicro from "./components/NewMicro"
 
     export default {
         name: "App",
         components: {
             FileForm,
             Macro,
-            Micro
+            NewMicro
         },
 
         data() {
