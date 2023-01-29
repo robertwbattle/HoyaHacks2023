@@ -31,7 +31,6 @@ export default {
     
   },
   async mounted() {
-    this.micro = await fetch(fsdfs)
   }
 
 }
