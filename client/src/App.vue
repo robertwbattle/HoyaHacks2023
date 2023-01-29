@@ -3,7 +3,7 @@
         <!-- <Micro v-if="this.analysis" class="left-pane" :analysis="this.analysis"/> -->
         <NewMicro v-if="this.analysis" class="left-pane" :analysis="this.analysis"/>
         <FileForm v-else="this.analysis" class="left-pane" url="/analyze" @received-analysis="setAnalysis" />
-
+        <span class="line"></span>
         <OldMacro v-if="this.analysis" :analysis="this.analysis"/>
     </div>
 </template>
@@ -38,21 +38,22 @@
 </script>
 
 <style>
-    body {
-        height: 100vh;
-    }
+  body {
+      height: 100vh;
+  }
 
-    .app {
-        height: 100%;
-    }
+  .app {
+      height: 100%;
+  }
 
-    .app-container {
-        background-color: #262626;
-        display: grid;
-        grid-template-columns: 50% auto 50%;
-    }
-
-    .left-pane {
-        border-right: 1px solid black;
-    }
+  .app-container {
+      background-color: #262626;
+      display: grid;
+      grid-template-columns: 50% auto 50%;
+  }
+  .line {
+    background:linear-gradient(#000,#000) center/2px 100% no-repeat;
+    height: 100vh;
+    width: 1px;
+  }
 </style>

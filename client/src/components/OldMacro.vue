@@ -2,7 +2,7 @@
   <div class="macro-container">
     <div id="cy"></div>
     <div class="macro-player">
-      <button id="play" class="playback-btn btn btn-secondary">Play</button>
+      <button @click="setUpGraph" id="play" class="playback-btn btn btn-primary">Replay</button>
     </div>
   </div>
 </template>
@@ -72,13 +72,10 @@ export default {
               'curve-style': 'bezier'
             }
           },
-          // {
-          //   selector: '.foo',
-          //   style: {
-          //     'background-color': '#000'
-          //   }
-          // }
         ],
+        layout: {
+          'name': 'circle'
+        }
       });
       cy.userZoomingEnabled( false );
 
@@ -96,15 +93,15 @@ export default {
         let sourceNode = cy.elements(`node#${this.analysis.order[i]}`);
         animationQueue.push(sourceNode.id());
         let targetNode = cy.elements(`node#${this.analysis.order[i+1]}`);
-        if(sourceNode.edgesTo(`#${this.analysis.order[i+1]}`)){
-          let edge = sourceNode.edgesTo(`#${this.analysis.order[i+1]}`);
+        if(sourceNode.edgesWith(`#${this.analysis.order[i+1]}`).id()){
+          let edge = sourceNode.edgesWith(`#${this.analysis.order[i+1]}`);
           animationQueue.push(edge.id());
         }
       }
       console.log(animationQueue)
 
       this.animateNode(cy, animationQueue, 0, false);
-      setTimeout(this.animateNode(cy, animationQueue, 0, true), 1000)
+      setTimeout(this.animateNode(cy, animationQueue, 0, true), 800)
     },
     animateNode(cy, queue, i, isFading) {
       if (i >= queue.length) {
@@ -130,9 +127,9 @@ export default {
             },
             duration: 1000,
             easing: 'linear'
-          }, 1000)
+          })
         }
-        setTimeout(() => this.animateNode(cy, queue, i + 1, isFading), 250)
+        setTimeout(() => this.animateNode(cy, queue, i + 1, isFading), 800)
       }
   },
   async mounted() {
