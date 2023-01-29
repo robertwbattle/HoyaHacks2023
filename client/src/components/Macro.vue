@@ -2,11 +2,10 @@
   <div class="macro-container">
     <div id="cy"></div>
     <div class="macro-player">
-      <button id="pause" class="playback-btn">Pause</button>
-      <button id="play" class="playback-btn">Play</button>
+      <button id="pause" class="playback-btn btn btn-secondary">Pause</button>
+      <button id="play" class="playback-btn btn btn-secondary">Play</button>
     </div>
   </div>
-    
 </template>
 
 <script>
@@ -56,7 +55,7 @@ export default {
           {
             selector: 'node',
             style: {
-              'background-color': '#666',
+              'background-color': '#FBF9FF',
               'label': 'data(id)'
             },
             css: {
@@ -73,12 +72,12 @@ export default {
               'curve-style': 'bezier'
             }
           },
-          {
-            selector: '.foo',
-            style: {
-              'background-color': '#000'
-            }
-          }
+          // {
+          //   selector: '.foo',
+          //   style: {
+          //     'background-color': '#000'
+          //   }
+          // }
         ],
       });
       cy.userZoomingEnabled( false );
@@ -96,30 +95,40 @@ export default {
         }
         let sourceNode = cy.elements(`node#${macroJSON.order[i]}`);
         let targetNode = cy.elements(`node#${macroJSON.order[i+1]}`);
-        let edge = sourceNode.edgesWith(`#${macroJSON.order[i+1]}`);
+        let edge = sourceNode.edgesTo(`#${macroJSON.order[i+1]}`);
         animationQueue.push(sourceNode.id());
         animationQueue.push(edge.id());
       }
       console.log(animationQueue)
-
-      // this.animateNode(cy, 0);
+      
+      this.animateNode(cy, animationQueue, 0, false);
+      setTimeout(this.animateNode(cy, animationQueue, 0, true), 1000)
     },
-    animateNode(cy, source, edge, i) {
-      if (i >= macroJSON.order.length) {
+    animateNode(cy, queue, i, isFading) {
+      if (i >= queue.length) {
         return
       }
-        const node = macroJSON.order[i];
+        let color;
+        const elmId = queue[i];
+        const currentElm = cy.elements(`#${elmId}`);
+        console.log(currentElm)
+        
+        if(isFading){
+          color = '#FBF9FF'
+        }
+        else {
+          color = '#ff6933'
+        }
+        currentElm.animate({
+            style : {
+              'background-color' : color
+            },
+            duration: 1000,
+            easing: 'linear'
+          }, 1000)
+        
 
-        let currentNode = cy.elements(`node#${node}`);
-        currentNode.animate({
-          style : {
-            'background-color' : 'yellow'
-          },
-          duration: 1000,
-          easing: 'linear'
-        }, 4000)
-
-        setTimeout(() => this.animateNode(cy, i + 1), 2500)
+        setTimeout(() => this.animateNode(cy, queue, i + 1, isFading), 250,)
       }
   },
   async mounted() {

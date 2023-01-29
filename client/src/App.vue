@@ -54,7 +54,7 @@ body {
   width: auto;
   height: 100%;
   grid-template-columns: 50% auto 50%;
-  background-color: #FBF9FF;
+  background-color: #262626;
 }
 
 .line {
