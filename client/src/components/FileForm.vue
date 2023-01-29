@@ -1,9 +1,12 @@
 <template lang="en">
-    <div class="fileform">
-            <form v-on:submit="sendReq" enctype=multipart/form-data>
-                <input type="file" accept=".py" name=file >
-                <input type="submit">
-            </form>
+    <div class="d-flex align-items-center justify-content-center">
+        <form class="file-upload-form p-4 rounded" v-on:submit="submitFile" ref="fileUploadForm">
+            <h5 class="text-dark mb-4">Upload a Python file to analyze</h5>
+
+            <input type="file" class="file-upload-input form-control mb-3" name="file">
+
+            <button type="submit" class="btn btn-primary w-100">Submit</button>
+        </form>
     </div>
 </template>
 
@@ -14,20 +17,24 @@ export default {
     props: {
         url: String
     },
+
     methods: {
-        sendReq(event) {
-            let fData = new FormData();
-            var input = document.querySelector('input[type="file"]');
-            fData.append('file', input.files[0])
+        submitFile(event) {
             fetch(this.url, {
                 method: "POST",
-                body: fData
-            }).then(response=>response.json()).then(result=>console.log(result));
+                body: new FormData(this.$refs.fileUploadForm)
+            })
+                .then(response => response.json())
+                .then(result => console.log(result));
+
             event.preventDefault();
         }
     }
 }
 </script>
-<style lang="">
-    
+
+<style scoped>
+    .file-upload-form {
+        background-color: #f0f0f0;
+    }
 </style>
