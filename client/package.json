@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "cytoscape": "^3.23.0",
+    "cytoscape-autopan-on-drag": "^2.2.1",
     "leader-line": "^1.0.7",
     "vue": "^3.2.13"
   },

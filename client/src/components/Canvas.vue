@@ -11,6 +11,8 @@
 
 <script>
 	import cytoscape from "cytoscape";
+	import autopanOnDrag from "cytoscape-autopan-on-drag";
+	autopanOnDrag( cytoscape ); // register extension
 
     export default {
         name: "Canvas",
@@ -47,7 +49,7 @@
 					if (i > 0) {
 						const current_animation = animation;
 
-						animation = () => this.canvas.delay(1000, current_animation);
+						animation = () => this.canvas.delay(100, current_animation);
 					}
 				}
 
@@ -83,10 +85,24 @@
 							}
 						},
 					],
+					layout: {
+            'name': 'circle'
+        	}
 				});
-
-				this.canvas.userZoomingEnabled(false);
+				this.canvas.elements().layout({
+					name: 'circle'
+				});
 				this.canvas.on("tap", "node", event => this.$props.onNodeTapped(event.target.id()));
+				let instance = this.canvas.autopanOnDrag( 
+					{
+						enabled: true, // Whether the extension is enabled on register
+						selector: 'node', // Which elements will be affected by this extension
+						speed: 1 // Speed of panning when elements exceed canvas bounds
+					}
+				);
+				instance.enable(); // enable the instance
+				this.canvas.autopanOnDrag('get');
+				
 			}
         },
 

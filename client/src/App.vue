@@ -1,10 +1,12 @@
 <template>
     <div class="app-container h-100">
-        <Micro v-if="this.analysis" class="left-pane"/>
-        <FileForm v-else="this.analysis" class="left-pane" url="/analyze" @received-analysis="setAnalysis"></FileForm>
+        <!-- <Micro v-if="this.analysis" class="left-pane" :analysis="this.analysis"/> -->
+        <Macro v-if="this.analysis" :analysis="this.analysis"/>
+        <FileForm v-else="this.analysis" class="left-pane" url="/analyze" @received-analysis="setAnalysis" />
 
         <Macro v-if="this.analysis" :analysis="this.analysis"/>
     </div>
+    "bar/y/1"
 </template>
 
 <script>
