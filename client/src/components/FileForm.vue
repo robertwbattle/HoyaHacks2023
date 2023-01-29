@@ -1,9 +1,9 @@
-<template lang="en">
+<template>
     <div class="d-flex align-items-center justify-content-center">
-        <form class="file-upload-form p-4 rounded" v-on:submit="submitFile" ref="fileUploadForm">
+        <form class="file-upload-form border p-4 rounded" v-on:submit="submitFile" ref="fileUploadForm">
             <h5 class="text-dark mb-4">Upload a Python file to analyze</h5>
 
-            <input type="file" class="file-upload-input form-control mb-3" name="file">
+            <input type="file" class="form-control mb-3" name="file">
 
             <button type="submit" class="btn btn-primary w-100">Submit</button>
         </form>
@@ -25,7 +25,9 @@ export default {
                 body: new FormData(this.$refs.fileUploadForm)
             })
                 .then(response => response.json())
-                .then(result => console.log(result));
+                .then(result => {
+                    this.$emit("receivedAnalysis", result);
+                });
 
             event.preventDefault();
         }
