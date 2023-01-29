@@ -1,101 +1,28 @@
 <template>
-	<Canvas
-		:generateElements="this.generateElements"
-		:onNodeTapped="this.onNodeTapped"
-		ref="canvas"></Canvas>
+  <div class="macro-container">
+    <div id="cy"></div>
+    <div class="macro-player">
+      <button id="pause" class="playback-btn btn btn-secondary">Pause</button>
+      <button id="play" class="playback-btn btn btn-secondary">Play</button>
+    </div>
+  </div>
 </template>
 
 <script>
-	import Canvas from "./Canvas";
+import macroJSON from '../json/exampleData.json'
+import cytoscape from 'cytoscape';
 
-    export default {
-        name: "Macro",
-        props: ["analysis"],
-        components: {
-            Canvas
-        },
-
-        methods: {
-			animateElement(element, shouldFade) {
-				let color;
-
-				if (shouldFade) {
-					color = this.$refs.canvas.backgroundColor();
-				} else {
-					color = "#FF6933";
-				}
-
-				element.animate({
-					style : {
-						"background-color" : color
-					},
-
-					duration: 100,
-					easing: "linear"
-				});
-			},
-
-			generateElements() {
-				const elements = [];
-
-				for (const fn of this.analysis.functions) {
-					elements.push({
-						data: {
-							id: fn
-						}
-					});
-				}
-
-				for (const [caller, callee] of this.analysis.edges) {
-					elements.push({
-						data: {
-							id: `${caller}-${callee}`,
-							source: caller,
-							target: callee
-						}
-					});
-				}
-
-				return elements;
-			},
-
-			onNodeTapped(function_name) {
-				console.log(function_name);
-			}
-		},
-
-		mounted() {
-			let shouldFade = false;
-
-			do {
-				if (shouldFade) {
-					this.$refs.canvas.addAnimation(() => {});
-				}
-
-				for (let i = 0; i < this.analysis.order.length; i++) {
-					const currentShouldFade = shouldFade;
-
-					this.$refs.canvas.addAnimation(canvas => {
-						const node = canvas.elements(`node#${this.analysis.order[i]}`);
-
-						this.animateElement(node, currentShouldFade);
-
-						if (i < this.analysis.order.length - 1) {
-							this.animateElement(
-								node.edgesWith(`#${this.analysis.order[i + 1]}`),
-								currentShouldFade
-							);
-						}
-					});
-				}
-
-				shouldFade = !shouldFade;
-			} while(shouldFade);
-
-			this.$refs.canvas.render();
-		}
+export default {
+  name: 'Macro',
+  props: {
+  },
+  components: {
+    Function
+  },
+  data() {
+    return {
+      macroData: []
     }
-<<<<<<< HEAD
   },
   methods: {
     async updateMacro() {
@@ -173,7 +100,7 @@
         animationQueue.push(edge.id());
       }
       console.log(animationQueue)
-      
+
       this.animateNode(cy, animationQueue, 0, false);
       setTimeout(this.animateNode(cy, animationQueue, 0, true), 1000)
     },
@@ -184,8 +111,8 @@
         let color;
         const elmId = queue[i];
         const currentElm = cy.elements(`#${elmId}`);
-        //console.log(currentElm)
-        
+        console.log(currentElm)
+
         if(isFading){
           color = '#FBF9FF'
         }
@@ -199,7 +126,7 @@
             duration: 1000,
             easing: 'linear'
           }, 1000)
-        
+
 
         setTimeout(() => this.animateNode(cy, queue, i + 1, isFading), 250,)
       }
@@ -209,6 +136,23 @@
     await this.setUpGraph()
   }
 }
-=======
->>>>>>> 1558517 (Converted Macro to use Canvas)
 </script>
+
+<style scoped>
+  #cy {
+    width: 50vw;
+    height: 50vh;
+    display: block;
+  }
+
+  .macro-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .playback-btn {
+    margin: 0 10px;
+  }
+</style>

@@ -1,16 +1,14 @@
 <template>
-    <div class="main-container">
-        <Micro v-if="this.analysis"/>
-        <FileForm v-else="this.analysis" url="/analyze" @received-analysis="setAnalysis"></FileForm>
+    <div class="app-container h-100">
+        <Micro v-if="this.analysis" class="left-pane"/>
+        <FileForm v-else="this.analysis" class="left-pane" url="/analyze" @received-analysis="setAnalysis"></FileForm>
 
-        <span class="line"></span>
-
-        <Macro v-if="this.analysis"/>
+        <Macro v-if="this.analysis" :analysis="this.analysis"/>
     </div>
 </template>
 
 <script>
-    import FileForm from "./components/FileForm.vue"
+    import FileForm from "./components/FileForm"
     import Macro from "./components/Macro"
     import Micro from "./components/Micro"
 
@@ -36,30 +34,22 @@
     }
 </script>
 
-<style scoped>
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
-
+<style>
     body {
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-    }
-
-    .main-container {
-        display: grid;
-        width: auto;
-        height: 100%;
-        grid-template-columns: 50% auto 50%;
-        background-color: #262626;
-    }
-
-    .line {
-        background:linear-gradient(#000,#000) center/2px 100% no-repeat;
         height: 100vh;
-        width: 1px;
+    }
+
+    .app {
+        height: 100%;
+    }
+
+    .app-container {
+        background-color: #262626;
+        display: grid;
+        grid-template-columns: 50% auto 50%;
+    }
+
+    .left-pane {
+        border-right: 1px solid black;
     }
 </style>

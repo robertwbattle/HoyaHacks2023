@@ -3,7 +3,7 @@
         <form class="file-upload-form border p-4 rounded" v-on:submit="submitFile" ref="fileUploadForm">
             <h5 class="text-dark mb-4">Upload a Python file to analyze</h5>
 
-            <input type="file" class="form-control mb-3" name="file">
+            <input type="file" class="form-control mb-3" name="file" required>
 
             <button type="submit" class="btn btn-primary w-100">Submit</button>
         </form>
