@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import createStates from '../createStates.js'
 
 export default {
     name: 'FileForm',
@@ -27,6 +28,8 @@ export default {
                 .then(response => response.json())
                 .then(result => {
                     this.$emit("receivedAnalysis", result);
+                    console.log(result);
+                    createStates(result["microscopic"]);
                 });
 
             event.preventDefault();

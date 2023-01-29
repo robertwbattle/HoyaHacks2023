@@ -111,7 +111,7 @@ export default {
         let color;
         const elmId = queue[i];
         const currentElm = cy.elements(`#${elmId}`);
-        console.log(currentElm)
+        //console.log(currentElm)
         
         if(isFading){
           color = '#FBF9FF'
