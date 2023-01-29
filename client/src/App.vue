@@ -52,7 +52,7 @@
       grid-template-columns: 50% auto 50%;
   }
   .line {
-    background:linear-gradient(#000,#000) center/2px 100% no-repeat;
+    background:linear-gradient(#FFF,#FFF) center/2px 100% no-repeat;
     height: 100vh;
     width: 1px;
   }

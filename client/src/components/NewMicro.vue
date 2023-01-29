@@ -1,15 +1,14 @@
 <template>
-    <!-- <div class="micro-container">
-        <textarea readonly cols="30" id="json" style="background-color: transparent;color:#fff;width: 100%; height: 75%;resize:none;"></textarea>
-        <label class="path-label" for="path-input">Enter variable to track in the format function/variable/functionCall, then press view!</label>
-        <input type="text" name="path-input" id="path-input" placeholder="bar/z/0" style="resize:none;height:30px;width: 100%;background-color:transparent;color:#fff;"> -->
-    <div style="margin-left:10px"><textarea readonly cols="30" id="json" style="background-color: transparent;color:#fff;height:400px;width:700px;resize:none;"></textarea>
-        <p></p>
-        <textarea style="resize:none;width:800px;height:30px;background-color:transparent;color:#fff;" maxlength="80" id="enter">Enter variable to track in the format function/variable/functionCall, then press view!</textarea>
-        <button id="view" @click="view">View</button>
+    <div class="micro-container">
+        <textarea readonly cols="30" id="json"></textarea>
+        <label for="string-parser" class="parser-label">Enter variable to track in the format function/variable/functionCall, then press view!</label>
+        <input type="text" id="string-parser" name="string-parser" placeholder="pizzaCounter/cheesePizzas/0">
+        <button id="view" @click="view" class="btn btn-caution">View</button>
         <p style="" id="variable"></p>
-        <button style="margin-top:100px" id="back" @click="back">Back</button>
-        <button style="margin-top:100px;margin-left:20px;" id="forward" @click="forward">Forward</button>
+        <div>
+            <button style="margin-top:100px" id="back" @click="back" class="btn btn-primary">Back</button>
+            <button style="margin-top:100px;margin-left:20px;" id="forward" @click="forward" class="btn btn-primary">Forward</button>
+        </div>
         <p hidden id="currentState"></p>
         <p hidden id="cind"></p>
     </div>
@@ -62,6 +61,16 @@
     flex-direction: column;
 }
 .path-label {
+    color: #FBF9FF;
+}
+
+.parser-label {
+    color: #FBF9FF;
+}
+
+#json {
+    height: 70%;
+    background-color: transparent;
     color: #FBF9FF;
 }
 </style>
