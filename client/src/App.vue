@@ -1,7 +1,7 @@
 <template>
   <div class="main-container">
     <!-- <Micro /> -->
-    <FileForm url="http://127.0.0.1:5000/catch"></FileForm>
+    <FileForm url="http://127.0.0.1:5000/analyze"></FileForm>
     <span class="line"></span>
     <Macro/>
   </div>

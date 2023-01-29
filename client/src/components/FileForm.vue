@@ -8,23 +8,26 @@
 </template>
 
 <script>
+
 export default {
     name: 'FileForm',
     props: {
         url: String
     },
     methods: {
-        async sendReq(evt) {
-            let response = await fetch(this.url, {
+        sendReq(event) {
+            let fData = new FormData();
+            var input = document.querySelector('input[type="file"]');
+            fData.append('file', input.files[0])
+            fetch(this.url, {
                 method: "POST",
-                body: evt.target.file
-            });
-
-            let result = await response.json();
+                body: fData
+            }).then(response=>response.json()).then(result=>console.log(result));
+            event.preventDefault();
         }
     }
 }
 </script>
 <style lang="">
-
+    
 </style>
