@@ -1,37 +1,39 @@
-from flask import Flask, render_template, Response, redirect, request
-from werkzeug.utils import secure_filename
-import os, json, tempfile
+import flask
+import json
+import os
+import sys
+import tempfile
+import uuid
 
-app = Flask(__name__)
+sys.path.append(os.pardir)
+
+from visify.analyzer.module_macroscopic import ModuleMacroscopic
+
+app = flask.Flask(__name__,
+    static_folder=os.path.join(os.pardir, "client", "dist"),
+    static_url_path="/"
+)
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return app.send_static_file("index.html")
 
+@app.route("/analyze")
+def analyze():
+    if "file" not in flask.request.files:
+        return "Please provide a Python file to analyze.", 400
 
-@app.route("/catch", methods=["POST"])
-def catch():
-    if request.method == "POST":
-        if "file" not in request.files:
-            return redirect("/") #tmp
-        file = request.files["file"]
-        if file and allowed_file(file.filename):
-            tFile = tempfile.TemporaryFile()
-            tFile.write(file.read())
-            tFile.seek(0)
-            # call jadens beautiful function and get json response
-            return page(tFile)
-        else:
-            return redirect("/") # tmp
-    else:
-        return Response("{'msg':'Error: POST method required.'}", status=200)
+    with tempfile.TemporaryDirectory() as directory:
+        module_name = str(uuid.uuid4())
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() == "py"
+        with open(os.path.join(directory, f"{module_name}.py")) as file:
+            file.write(flask.request.files["file"].read())
 
-def page(lines):
-    lines.seek(0)
-    data = json.loads("""{"functionA":{"sorted_list":{"name":"sorted_list","type":"list","operations":[[["append",[1]],["__delitem__",[0]]]]}}}""")
-    return render_template("file.html", txt=lines.read().decode("utf-8"), actions=data)
-app.run(debug=True)
+        sys.path.append(directory)
+
+        macroscopic = ModuleMacroscopic(module_name)
+        macroscopic.run()
+
+        del sys.path[-1]
+
+    return json.dumps(macroscopic.encoded_result())

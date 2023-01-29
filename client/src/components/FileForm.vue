@@ -2,7 +2,7 @@
     <div class="fileform">
             <form v-on:submit="sendReq" enctype=multipart/form-data>
                 <input type="file" accept=".py" name=file >
-                <input type="submit"></input>
+                <input type="submit">
             </form>
     </div>
 </template>
@@ -26,5 +26,5 @@ export default {
 }
 </script>
 <style lang="">
-    
+
 </style>
