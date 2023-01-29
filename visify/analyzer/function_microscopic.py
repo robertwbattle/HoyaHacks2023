@@ -25,7 +25,7 @@ class DataStructure:
 	def encoded(self):
 		return {
 			"name": self.name,
-			"type": "list" if self.type_ is list else None,
+			"type": "dict" if self.type_ is dict else "list" if self.type_ is list else None,
 			"invocations": [
 				None if invocation is None else invocation.encoded()
 

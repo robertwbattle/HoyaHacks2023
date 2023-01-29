@@ -12,7 +12,7 @@ class ModuleSpy:
 	@staticmethod
 	def operation_recorder(ds_id, operation_name):
 		def decorator(operation):
-			def wrapper(*args, **kwargs):
+			def wrapper(self, *args, **kwargs):
 				_injected_module_spy().record_operation(
 					ds_id,
 					operation_name,
@@ -20,7 +20,7 @@ class ModuleSpy:
 					kwargs
 				)
 
-				return operation(*args, **kwargs)
+				return operation(self, *args, **kwargs)
 
 			return wrapper
 
@@ -67,43 +67,46 @@ def generic_spy(ds, operation_names):
 
 			self.initial_value = value.copy()
 
-			for operation_name in operation_names:
-				self._monkey_patch_operation(operation_name)
-
 			self.is_recording = False
-
-		def _monkey_patch_operation(self, operation_name):
-			def spy_operation(*args, **kwargs):
-				operation = getattr(super(self.__class__, self), operation_name)
-
-				if not self.is_recording:
-					operation = ModuleSpy.operation_recorder(ds_id, operation_name)(operation)
-
-				was_recording = self.is_recording
-
-				self.is_recording = True
-
-				rv = operation(*args, **kwargs)
-
-				if not was_recording:
-					self.is_recording = False
-
-				return rv
-
-			setattr(self, operation_name, spy_operation)
 
 		def retire(self):
 			for operation_name in operation_names:
-				setattr(self, operation_name, getattr(super(), operation_name))
+				setattr(self.__class__, operation_name, getattr(type(ds), operation_name))
 
 		def supertype(self):
 			return type(self.initial_value)
+	
+	def _monkey_patch_operation(operation_name):
+		def spy_operation(self, *args, **kwargs):
+			operation = getattr(type(ds), operation_name)
+
+			if not self.is_recording:
+				operation = ModuleSpy.operation_recorder(ds_id, operation_name)(operation)
+
+			was_recording = self.is_recording
+
+			self.is_recording = True
+
+			rv = operation(self, *args, **kwargs)
+
+			if not was_recording:
+				self.is_recording = False
+
+			return rv
+
+		setattr(Spy, operation_name, spy_operation)
+
+	for operation_name in operation_names:
+		_monkey_patch_operation(operation_name)
 
 	spy = Spy(ds)
 
 	module_spy.add_ds(spy)
 
 	return spy
+
+def dict_spy(dict_):
+	return generic_spy(dict_, ["__delitem__", "__setitem__"])
 
 def list_spy(list_):
 	return generic_spy(list_, ["__delitem__", "__setitem__", "append", "insert"])
