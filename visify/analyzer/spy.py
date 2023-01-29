@@ -12,7 +12,7 @@ class ModuleSpy:
 	@staticmethod
 	def operation_recorder(ds_id, operation_name):
 		def decorator(operation):
-			def wrapper(self, *args, **kwargs):
+			def wrapper(*args, **kwargs):
 				_injected_module_spy().record_operation(
 					ds_id,
 					operation_name,
@@ -20,7 +20,7 @@ class ModuleSpy:
 					kwargs
 				)
 
-				return operation(self, *args, **kwargs)
+				return operation(*args, **kwargs)
 
 			return wrapper
 
